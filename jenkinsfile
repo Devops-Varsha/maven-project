@@ -6,5 +6,14 @@ pipeline
         {
             steps{ git branch: 'master', url: 'https://github.com/Devops-Varsha/maven-project'}
         }
+        stage('Build the code')
+        {
+            steps{ 
+                withMaven(jdk: 'JAVA_HOME', maven: 'MAVEN_HOME') 
+                {
+                     sh 'mvn package'
+                }
+            }
+        }
     }
 }
