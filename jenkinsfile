@@ -22,5 +22,20 @@ pipeline
                     sh 'scp -o StrictHostKeyChecking=no **/*.war ec2-user@172.31.3.4:/usr/share/tomcat/webapps'}
                 }
         }
+        stage('QA Approval Envt'){
+            steps{
+                    input 'Please approve QA deployment'
+            }
+        }
+        stage('Deploy to QA envt'){
+                steps{
+                        sshagent(['pipeline-tomcat-QA']) {
+                            sh 'scp -o StrictHostKeyChecking=no */target/*.war ec2-user@172.31.11.85:/usr/share/tomcat/webapps'
+                        }
+
+                    }
+
+            }
+        
     }
 }
