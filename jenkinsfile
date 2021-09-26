@@ -1,41 +1,34 @@
 pipeline
 {
     agent any
-    stages{
+    stages
+    {
         stage('SCM Checkout')
+        {steps { git branch: 'master', url: 'https://github.com/Devops-Varsha/maven-project.git'}}
+    
+    
+        stage('Execute test cases and Build code')
         {
-            steps{ git branch: 'master', url: 'https://github.com/Devops-Varsha/maven-project'}
-        }
-        stage('Build the code')
-        {
-            steps{ 
-                withMaven(jdk: 'JAVA_HOME', maven: 'MAVEN_HOME') 
+            parallel
+            {  
+                stage('Execute Test Cases')
                 {
-                     sh 'mvn package'
+                steps
+                {
+                    withMaven(jdk: 'JAVA_HOME', maven: 'MAVEN_HOME') {sh 'mvn test'}
                 }
-            }
-        }
-        stage('Deploy to dev')
-        {
-            steps{
-                    sshagent(['tomcat-pipeline']) {
-                    sh 'scp -o StrictHostKeyChecking=no */target/*.war ec2-user@172.31.3.4:/usr/share/tomcat/webapps'}
                 }
-        }
-        stage('QA Approval Envt'){
-            steps{
-                    input 'Please approve QA deployment'
+
+                stage('Code Build')
+                {
+                steps
+                { 
+                    withMaven(jdk: 'JAVA_HOME', maven: 'MAVEN_HOME') {sh 'mvn package'}
+                }
+                }       
             }
         }
-        stage('Deploy to QA envt'){
-                steps{
-                        sshagent(['pipeline-tomcat-QA']) {
-                            sh 'scp -o StrictHostKeyChecking=no */target/*.war ec2-user@172.31.11.85:/usr/share/tomcat/webapps'
-                        }
-
-                    }
-
-            }
-        
     }
+
+
 }
