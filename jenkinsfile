@@ -26,8 +26,12 @@ pipeline
                   withMaven(jdk: 'JAVA_HOME', maven: 'MAVEN_HOME') {sh 'mvn package'}}
                 }
                 }       
-            
-        }
+           }
+           
+     stage('Docker build & create docker image')
+      {
+        steps{ sh 'docker build -t vw07/docker-ci-cd:01 .' }
+      }
     }
 
 
