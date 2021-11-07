@@ -13,7 +13,7 @@ stage ('create package')
 {
     steps {
      
-          withMaven(jdk: 'JDK_HOME', maven: 'MAVEN_HOME') 
+         withMaven(jdk: 'JAVA_HOME', maven: 'MAVEN_HOME')  
             { sh 'mvn package' }
     }
 }
