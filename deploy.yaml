@@ -1,5 +1,8 @@
 ---
 - hosts: amazonweb
+  become_user: root
+  become: yes
+
   tasks:
 
     - name: "please install java"
