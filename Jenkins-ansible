@@ -26,7 +26,7 @@ stage('Send artifact from jenkins workspace to ansible playbook directory')
   }
 }
 
-stage(' Send deploy.yaml and run the playbook')
+stage(' Send deploy.yaml')
 {
 
 steps{
@@ -35,6 +35,11 @@ sshPublisher(publishers: [sshPublisherDesc(configName: 'ansible', transfers: [ss
 
 }
 
+}
+
+stage('Run the ansible playbook')
+{
+steps { ansiblePlaybook 'deploy.sh'  }
 }
 
 
