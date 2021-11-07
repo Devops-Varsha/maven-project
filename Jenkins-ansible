@@ -5,19 +5,26 @@ stages
 {
  stage ('scm checkout')
  { steps {
-     git branch: 'master', url: 'https://github.com/prakashk0301/maven-project/'
+     git branch: 'master', url: 'https://github.com/Devops-Varsha/maven-project.git'
          }
  }
  
 stage ('create package')
 {
     steps {
-     
-          withMaven(jdk: 'JDK_HOME', maven: 'MAVEN_HOME') 
-            { sh 'mvn package' }
+     withMaven(jdk: 'JAVA_HOME', maven: 'MAVEN_HOME') {
+      sh 'mvn package'
+}
     }
 }
 
+stage('Send artifact from jenkins workspace to ansible playbook directory')
+{
+  steps {
+  
+  sshPublisher(publishers: [sshPublisherDesc(configName: 'ansible', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '//etc//ansible//playbooks', remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'webapp/target/webapp.war')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+  }
+}
 
 
 }}
