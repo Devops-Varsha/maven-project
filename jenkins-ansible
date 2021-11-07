@@ -28,4 +28,3 @@ stage('Send artifact from jenkins workspace to ansible playbook directory')
 
 
 }}
-
