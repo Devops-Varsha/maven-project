@@ -1,8 +1,9 @@
 ---
 - hosts: amazonweb
-  become: yes
-  become_user: root
-  become_method: su
+  ansible_become: yes
+  ansible_become_method: su
+  ansible_become_user: ansadmin
+  ansible_become_pass: varsha
   tasks:
 
     - name: "please install java"
