@@ -37,10 +37,6 @@ sshPublisher(publishers: [sshPublisherDesc(configName: 'ansible', transfers: [ss
 
 }
 
-stage('Run the ansible playbook')
-{
-steps { ansiblePlaybook 'deploy.yaml'  }
-}
 
 
 }}
